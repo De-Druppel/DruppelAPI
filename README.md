@@ -1,1 +1,2 @@
 # DruppelAPI
+Nick Kersten
