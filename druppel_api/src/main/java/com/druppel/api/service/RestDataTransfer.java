@@ -1,10 +1,10 @@
 package com.druppel.api.service;
 
 public class RestDataTransfer {
-    public RestDataTransfer(String espId, String timeframe) {
+    public RestDataTransfer() {
     }
 
-    public String getResult() {
-        return "result";
+    public String save(String espId, String timeframe) {
+        return "Result";
     }
 }

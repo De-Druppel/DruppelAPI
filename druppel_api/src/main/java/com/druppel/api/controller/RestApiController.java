@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 @RequestMapping("druppel-api")
 public class RestApiController {
 
+    RestDataTransfer data = new RestDataTransfer();
+
     /**
      * Returns the requested measurements
      *
@@ -35,8 +37,8 @@ public class RestApiController {
     ) {
         // Check if api key is valid
         if (this.isValidApiKey(apiKey)) {
-            RestDataTransfer data = new RestDataTransfer(espId, timeframe);
-            return new ResponseEntity<>(data.getResult(), HttpStatus.OK);
+            String result = data.save(espId, timeframe);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
