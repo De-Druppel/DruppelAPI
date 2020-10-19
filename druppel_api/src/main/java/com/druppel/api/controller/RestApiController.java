@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @RequestMapping("druppel-api")
 public class RestApiController {
 
-    RestDataTransfer data = new RestDataTransfer();
+    private final RestDataTransfer data = new RestDataTransfer();
 
     /**
      * Returns the requested measurements
@@ -29,6 +29,7 @@ public class RestApiController {
      * @return ResponseEntity with the given message
      */
     @GetMapping("/past-readings/")
+    @ResponseBody
     public ResponseEntity<String> getMeasurements(
             // Query parameter validations
             @RequestParam(name = "api-key") @NotBlank (message = "API key cannot be blank") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
@@ -37,7 +38,7 @@ public class RestApiController {
     ) {
         // Check if api key is valid
         if (this.isValidApiKey(apiKey)) {
-            String result = data.get(espId, timeframe);
+            String result = this.data.get(espId, timeframe);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
