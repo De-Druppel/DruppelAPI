@@ -11,7 +11,7 @@ public class Plant {
 
     @OneToMany(targetEntity = Measurement.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "esp_id_plant",referencedColumnName = "esp_id")
-    private List<Measurement> measurements ;
+    private List<Measurement> measurementList;
 
     public Plant() {
     }
@@ -24,11 +24,11 @@ public class Plant {
         this.idEsp = idEsp;
     }
 
-    public List<Measurement> getMeasurements() {
-        return measurements;
+    public List<Measurement> getMeasurementList() {
+        return measurementList;
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
-        this.measurements = measurements;
+    public void setMeasurementList(List<Measurement> measurementList) {
+        this.measurementList = measurementList;
     }
 }
