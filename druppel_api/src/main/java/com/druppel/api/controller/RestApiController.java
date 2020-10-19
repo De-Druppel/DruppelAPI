@@ -37,7 +37,7 @@ public class RestApiController {
     ) {
         // Check if api key is valid
         if (this.isValidApiKey(apiKey)) {
-            String result = data.save(espId, timeframe);
+            String result = data.get(espId, timeframe);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
