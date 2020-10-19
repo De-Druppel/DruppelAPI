@@ -7,7 +7,6 @@ public class MqttDataTransfer {
 
     //TODO: method description
     public void saveMeasurement(String mqttHeader, String mqttPayload) {
-        System.out.println(mqttParser);
         Plant plant = mqttParser.parse(mqttHeader, mqttPayload);
     }
 }
