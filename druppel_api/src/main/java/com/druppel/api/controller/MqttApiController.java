@@ -27,7 +27,7 @@ public class MqttApiController {
     public MqttApiController() {
         try {
             // Get mqtt connection properties
-            this.prop.load(this.getClass().getResourceAsStream("mqtt.properties"));
+            this.prop.load(MqttApiController.class.getClassLoader().getResourceAsStream("mqtt.properties"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
