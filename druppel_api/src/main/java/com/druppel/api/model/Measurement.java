@@ -20,6 +20,9 @@ public class Measurement {
     @Column(name = "value")
     private Float value;
 
+    @Column( name= "esp_id_plant")
+    private Integer espId;
+
     public Measurement() {
     }
 
@@ -53,6 +56,14 @@ public class Measurement {
 
     public void setValue(Float value) {
         this.value = value;
+    }
+
+    public Integer getEspId() {
+        return espId;
+    }
+
+    public void setEspId(Integer espId) {
+        this.espId = espId;
     }
 }
 
