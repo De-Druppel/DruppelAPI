@@ -1,10 +1,10 @@
 # DruppelAPI
 
-###Requirements
+### Requirements
 - mvn
 - JDK 13
 
-###Credits
+### Credits
 - Tygo van Ommen
 - Nick Kersten
 - Iness
