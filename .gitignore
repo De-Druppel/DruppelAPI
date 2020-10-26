@@ -1,9 +1,10 @@
-HELP.md
+/HELP.md
 /target/
 /test/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+!src/main/**/target/
+!src/test/**/target/
+*.mvn
 
 
 ### STS ###
@@ -29,10 +30,11 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+!src/main/**/build/
+!src/test/**/build/
 
 ### VS Code ###
 .vscode/
 /.mvn/
 /.idea/
+/.mvn/
