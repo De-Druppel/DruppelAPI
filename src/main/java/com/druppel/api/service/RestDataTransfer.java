@@ -1,27 +1,38 @@
 package com.druppel.api.service;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.druppel.api.model.Measurement;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class RestDataTransfer {
+
     public RestDataTransfer() {
+
     }
 
     public String get(String espId, String timeframe) {
 
-        // JSON OBJECT EXAMPLE
-        JSONObject result = new JSONObject();
-        try {
-            JSONObject data = new JSONObject();
-            data.put("Temprature 1", "23");
-            data.put("Temprature 2", "54");
-            data.put("Temprature 3", "12");
+        // Get data tmp
+        Measurement measurement = new Measurement();
+        Measurement measurement2 = new Measurement();
 
-            result.put("Data", data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        // tmp measurements
+        measurement.setDate(new Date());
+        measurement.setType("Temperature");
+        measurement.setValue((float) 12.23);
 
-        return result.toString();
+        measurement2.setDate(new Date());
+        measurement2.setType("Humidity");
+        measurement2.setValue((float) 12.23);
+
+        ArrayList<Measurement> arraylist = new ArrayList<>();
+        arraylist.add(measurement);
+        arraylist.add(measurement2);
+
+        // Pare data
+        JsonParser parser = new JsonParser(arraylist);
+
+        return parser.getString();
     }
 }
