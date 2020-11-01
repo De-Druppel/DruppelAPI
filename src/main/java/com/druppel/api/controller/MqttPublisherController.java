@@ -17,6 +17,7 @@ public class MqttPublisherController {
         mqttMessageProducer = this.context.getBean(MqttTestPublisherConfiguration.MqttMessageProducer.class);
 
         if (DEBUG) {
+            System.out.println("DEBUG enabled in class: " + this.getClass());
             startMqttTestPublisher();
         }
     }
