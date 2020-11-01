@@ -5,6 +5,7 @@
 !src/main/**/target/
 !src/test/**/target/
 *.mvn
+*.properties
 
 
 ### STS ###

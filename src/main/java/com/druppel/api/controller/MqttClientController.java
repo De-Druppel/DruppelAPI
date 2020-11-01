@@ -42,7 +42,4 @@ public class MqttClientController {
         DirectChannel mqttInputChannel = applicationContext.getBean("mqttInputChannel", DirectChannel.class);
         return new EventDrivenConsumer(mqttInputChannel, handler());
     }
-
-
-
 }
