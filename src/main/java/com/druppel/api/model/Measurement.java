@@ -11,7 +11,7 @@ public class Measurement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "date")
+    @Column(name = "date_created")
     private Date date;
 
     @Column(name = "type")
@@ -20,7 +20,7 @@ public class Measurement {
     @Column(name = "value")
     private Float value;
 
-    @Column( name= "esp_id_plant")
+    @Column( name= "client_id")
     private Integer espId;
 
     public Measurement() {
