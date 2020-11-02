@@ -4,8 +4,12 @@ import com.druppel.api.service.MqttDataTransfer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication (scanBasePackages={"com.druppel.api"})
+@ComponentScan(basePackages ={"com.druppel.api.controller","com.druppel.api.service","com.druppel.api.model","com.druppel.api.dal"})
+
 public class ApiApplication {
 
     public static void main(String[] args) {

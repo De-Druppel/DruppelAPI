@@ -1,5 +1,6 @@
 package com.druppel.api.controller;
 
+import com.druppel.api.dal.MeasurementSummary;
 import com.druppel.api.service.RestDataTransfer;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Request example: http://localhost:8080/druppel-api/past-readings/?api-key=DRUPPEL_KEY&timeframe=day&esp-id=123456
@@ -45,8 +48,9 @@ public class RestApiController {
         if (!this.isValidApiKey(apiKey)) {
             throw new Exception("Unauthorized");
         }
-        String jsonString = this.data.get(espId, timeframe);
-        return new ResponseEntity<>(jsonString, HttpStatus.OK);
+      //  String jsonString = this.data.get(espId, timeframe);
+     //   return new ResponseEntity<>(jsonString, HttpStatus.OK);
+        return null;
     }
 
     /**
@@ -82,6 +86,19 @@ public class RestApiController {
         headers.setContentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE));
 
         return new ResponseEntity<>(result.toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    /**
+     * Returns the requested average measurements
+     *
+     * @param date1 Date from you want to get the measurements(day|week|month)
+     * @param date2 Date until you want to get the measurements(day|week|month)
+     * @param espId Id of microcontroller
+     * @return ResponseBody with the given message
+     */
+    @GetMapping(path="/past-readings2/")
+    public @ResponseBody List<MeasurementSummary> getAverageMeasurementList(@RequestParam Date date1,@RequestParam Date date2,@RequestParam int espId){
+
+        return data.getAverageSummary(date1, date2, espId);
     }
 
 }
