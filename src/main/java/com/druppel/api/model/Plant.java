@@ -7,10 +7,11 @@ import java.util.List;
 @Table(name = "plant")
 public class Plant {
     @Id
+    @Column(name = "esp_id")
     private Integer idEsp;
 
     @OneToMany(targetEntity = Measurement.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "esp_id_plant", referencedColumnName = "esp_id")
+    @JoinColumn(name = "client_id", referencedColumnName = "esp_id")
     private List<Measurement> measurementList;
 
     public Plant() {
