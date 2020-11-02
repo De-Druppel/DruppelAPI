@@ -1,38 +1,29 @@
 package com.druppel.api.service;
 
+import com.druppel.api.dal.MeasurementRepo;
+import com.druppel.api.dal.MeasurementSummary;
 import com.druppel.api.model.Measurement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+@Service
 public class RestDataTransfer {
+    @Autowired
+    private MeasurementRepo measurementRepo;
 
-    public RestDataTransfer() {
-
+    public void save(Measurement measurement) {
+        measurementRepo.save(measurement);
     }
 
-    public String get(String espId, String timeframe) {
-
-        // Get data tmp
-        Measurement measurement = new Measurement();
-        Measurement measurement2 = new Measurement();
-
-        // tmp measurements
-        measurement.setDate(new Date());
-        measurement.setType("Temperature");
-        measurement.setValue((float) 12.23);
-
-        measurement2.setDate(new Date());
-        measurement2.setType("Humidity");
-        measurement2.setValue((float) 12.23);
-
-        ArrayList<Measurement> arraylist = new ArrayList<>();
-        arraylist.add(measurement);
-        arraylist.add(measurement2);
-
-        // Pare data
-        JsonParser parser = new JsonParser(arraylist);
-
-        return parser.getString();
+    public List<Measurement> findAll(){
+        return (List<Measurement>) measurementRepo.findAll();
     }
+
+    public List<MeasurementSummary> getAverageSummary(Date date1, Date date2,int EspId){
+       return measurementRepo.getAverageSummary(date1,date2,EspId);
+    }
+
 }
