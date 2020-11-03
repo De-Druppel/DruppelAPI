@@ -23,14 +23,13 @@ public interface MeasurementRepo extends JpaRepository <Measurement, Integer> {
 
     /**
      * Returns list of average of measured values grouped by day and type on a specific time interval
-        * using interface-based Data JPA Projections
-     @param  date1 Date for date where the values were measured
-     @param  date2 Date for date where the values were measured
-     @return  List of date,type, average value
+     * using interface-based Data JPA Projections
+     *
+     * @param days the amount of days you want
+     * @param espId the esp you want to query on
+     * @return List of date,type, average value
      */
-
-    @Query("Select date As date, type As type, avg (value) AS value From Measurement Where date >= ?1 and date<=?2 and espId =?3 group by type,date" )
-    public List<MeasurementSummary> getAverageSummary(Date date1, Date date2,int espId);
-
+    @Query("SELECT date_created, type, value FROM v_measurement WHERE date_created > current_date - interval ?1 day AND esp_id = ?2" )
+    public List<MeasurementSummary> getAverageSummary(int days, int espId);
 
 }
