@@ -12,13 +12,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Request example: http://localhost:8080/druppel-api/past-readings/?api-key=DRUPPEL_KEY&timeframe=day&esp-id=123456
+ * Request example: http://localhost:8080/druppel-api/past-readings/?api-key=DRUPPEL_KEY&days=days&esp-id=123456
  */
 @RestController
 @Validated
@@ -32,25 +30,24 @@ public class RestApiController {
      * Returns the requested measurements
      *
      * @param apiKey    String API key for request validation
-     * @param timeframe String measurements you want to see of a specific timeframe (day|week|month)
+     * @param days      String measurements you want to see of a specific amount of days
      * @param espId     String ESP ID
      * @return ResponseEntity with the given message
      */
     @GetMapping(path = "/past-readings/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Object> getMeasurements(
+    public List<MeasurementSummary> getMeasurements(
             // Query parameter validations
-            @RequestParam(name = "api-key") @NotBlank(message = "API key cannot be blank") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
-            @RequestParam(name = "timeframe") @Pattern(regexp = "^(day|week|month)$", message = "Timeframe does not exist") String timeframe,
-            @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be blank") @Size(min = 5, max = 15, message = "Invalid ESP ID") String espId
+            @RequestParam(name = "api-key") @NotBlank(message = "API key cannot be empty") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
+            @RequestParam(name = "days") @NotBlank(message = "Timeframe cannot be empty") @Size(min = 1, max = 3, message = "Invalid time frame") int days,
+            @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be empty") @Size(min = 5, max = 15, message = "Invalid ESP ID") int espId
     ) throws Exception {
         // Check if api key is valid
         if (!this.isValidApiKey(apiKey)) {
             throw new Exception("Unauthorized");
         }
-      //  String jsonString = this.data.get(espId, timeframe);
-     //   return new ResponseEntity<>(jsonString, HttpStatus.OK);
-        return null;
+
+        return this.data.getAverageSummary(days, espId);
     }
 
     /**
@@ -87,18 +84,4 @@ public class RestApiController {
 
         return new ResponseEntity<>(result.toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    /**
-     * Returns the requested average measurements
-     *
-     * @param date1 Date from you want to get the measurements(day|week|month)
-     * @param date2 Date until you want to get the measurements(day|week|month)
-     * @param espId Id of microcontroller
-     * @return ResponseBody with the given message
-     */
-    @GetMapping(path="/past-readings2/")
-    public @ResponseBody List<MeasurementSummary> getAverageMeasurementList(@RequestParam Date date1,@RequestParam Date date2,@RequestParam int espId){
-
-        return data.getAverageSummary(date1, date2, espId);
-    }
-
 }
