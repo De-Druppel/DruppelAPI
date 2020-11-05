@@ -8,8 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication (scanBasePackages={"com.druppel.api"})
+@ComponentScan(basePackages ={"com.druppel.api.controller","com.druppel.api.service","com.druppel.api.model","com.druppel.api.dal"})
+
 public class ApiApplication {
 
     AnnotationConfigApplicationContext applicationContext;

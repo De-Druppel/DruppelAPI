@@ -1,27 +1,29 @@
 package com.druppel.api.service;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.druppel.api.dal.MeasurementRepo;
+import com.druppel.api.dal.MeasurementSummary;
+import com.druppel.api.model.Measurement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
+@Service
 public class RestDataTransfer {
-    public RestDataTransfer() {
+    @Autowired
+    private MeasurementRepo measurementRepo;
+
+    public void save(Measurement measurement) {
+        measurementRepo.save(measurement);
     }
 
-    public String get(String espId, String timeframe) {
-
-        // JSON OBJECT EXAMPLE
-        JSONObject result = new JSONObject();
-        try {
-            JSONObject data = new JSONObject();
-            data.put("Temprature 1", "23");
-            data.put("Temprature 2", "54");
-            data.put("Temprature 3", "12");
-
-            result.put("Data", data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
+    public List<Measurement> findAll(){
+        return (List<Measurement>) measurementRepo.findAll();
     }
+
+    public List<MeasurementSummary> getAverageSummary(int days, int EspId){
+       return measurementRepo.getAverageSummary(days, EspId);
+    }
+
 }
