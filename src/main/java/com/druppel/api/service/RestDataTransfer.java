@@ -22,8 +22,7 @@ public class RestDataTransfer {
         return (List<Measurement>) measurementRepo.findAll();
     }
 
-    public List<MeasurementSummary> getAverageSummary(int days, int EspId){
-       return measurementRepo.getAverageSummary(days, EspId);
+    public List<MeasurementSummary> getAverageSummary(int days, int EspId, String type){
+       return measurementRepo.getAverageSummary(days, EspId, type);
     }
-
 }

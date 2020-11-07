@@ -26,7 +26,7 @@ CREATE TABLE `v_measurement` (
 
 DROP TABLE IF EXISTS `v_measurement`;
 
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_measurement`  AS  select `t2`.`esp_id` AS `esp_id`,`t1`.`type` AS `type`,round(avg(`t1`.`value`),2) AS `value`,`t1`.`date_created` AS `date_created` from (`measurement` `t1` join `plant` `t2` on(`t1`.`client_id` = `t2`.`id`)) group by `t2`.`esp_id`,`t1`.`date_created` ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_measurement`  AS  select `t2`.`esp_id` AS `esp_id`,`t1`.`type` AS `type`,round(avg(`t1`.`value`),2) AS `value`,`t1`.`date_created` AS `date_created` from (`measurement` `t1` join `plant` `t2` on(`t1`.`client_id` = `t2`.`id`)) group by `t2`.`esp_id`,`t1`.`date_created`,`t1`.`type` ;
 
 ALTER TABLE `measurement`
   ADD PRIMARY KEY (`id`),
