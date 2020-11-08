@@ -21,5 +21,4 @@ public interface VMeasurementRepo extends JpaRepository<VMeasurement, Integer> {
      */
     @Query("SELECT date, type, value FROM VMeasurement WHERE date > current_date - interval ?1 day AND esp_id = ?2 AND type LIKE '%?3%'" )
     public List<MeasurementSummary> getAverageSummary(int days, int espId, String type);
-
 }
