@@ -1,8 +1,10 @@
 package com.druppel.api.controller;
 
 import com.druppel.api.dal.MeasurementSummary;
+import com.druppel.api.dal.VMeasurementRepo;
 import com.druppel.api.response.MeasurementResponse;
 import com.druppel.api.service.RestDataTransfer;
+import com.druppel.api.service.VMeasurementService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ import java.util.List;
 public class RestApiController {
     @Autowired
     private RestDataTransfer data;
+    @Autowired
+    private VMeasurementService vMeasurementService;
 
     private final String KEY = "DRUPPEL_KEY";
 
@@ -56,7 +60,7 @@ public class RestApiController {
         int code =200;
         String message ="ok";
         MeasurementResponse response=new MeasurementResponse(code,message);
-        List<MeasurementSummary> infoList = data.getAverageSummary(days, espId, type);
+        List<MeasurementSummary> infoList = vMeasurementService.getAverageSummary(days, espId, type);
 
         return response;
     }
