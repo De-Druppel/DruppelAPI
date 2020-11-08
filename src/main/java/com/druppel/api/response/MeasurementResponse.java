@@ -12,6 +12,11 @@ public class MeasurementResponse {
     public MeasurementResponse() {
     }
 
+    public MeasurementResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     public int getCode() {
         return code;
     }
