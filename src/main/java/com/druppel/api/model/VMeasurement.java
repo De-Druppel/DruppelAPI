@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Table(name = "v_measurements")
 public class VMeasurement {
 
-    // need to implement an Id
- /*   @Id
+    // Should have an Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;*/
+    private Integer id;
 
     @Column(name = "esp_id")
     private int espId;
