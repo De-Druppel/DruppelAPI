@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * Request example: http://localhost:8080/druppel-api/past-readings/?api-key=DRUPPEL_KEY&days=days&esp-id=123456
+ * Request example: http://localhost:8080/druppel-api/past-readings/?api-key=DRUPPEL_KEY&days=days&esp-id=123456&type=temprature
  */
 @RestController
 @Validated
@@ -30,8 +30,9 @@ public class RestApiController {
      * Returns the requested measurements
      *
      * @param apiKey    String API key for request validation
-     * @param days      String measurements you want to see of a specific amount of days
-     * @param espId     String ESP ID
+     * @param days      int measurements you want to see of a specific amount of days
+     * @param espId     int ESP ID
+     * @param type      String type you want to query (optional)
      * @return ResponseEntity with the given message
      */
     @GetMapping(path = "/past-readings/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,14 +41,15 @@ public class RestApiController {
             // Query parameter validations
             @RequestParam(name = "api-key") @NotBlank(message = "API key cannot be empty") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
             @RequestParam(name = "days") @NotBlank(message = "Timeframe cannot be empty") @Size(min = 1, max = 3, message = "Invalid time frame") int days,
-            @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be empty") @Size(min = 5, max = 15, message = "Invalid ESP ID") int espId
+            @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be empty") @Size(min = 5, max = 15, message = "Invalid ESP ID") int espId,
+            @RequestParam(name = "type") String type
     ) throws Exception {
         // Check if api key is valid
         if (!this.isValidApiKey(apiKey)) {
             throw new Exception("Unauthorized");
         }
 
-        return this.data.getAverageSummary(days, espId);
+        return this.data.getAverageSummary(days, espId, type);
     }
 
     /**
