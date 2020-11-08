@@ -1,17 +1,15 @@
 package com.druppel.api.response;
 
+import com.druppel.api.dal.MeasurementSummary;
+
 import java.util.List;
 
 public class MeasurementResponse {
     private int code;
     private String message;
-    private String temperatureUnit;
-    private List<MeasurementInfo> data;
+    private List<MeasurementSummary> data;
 
-    public MeasurementResponse(int code, String message, String temperatureUnit) {
-        this.code = code;
-        this.message = message;
-        this.temperatureUnit = temperatureUnit;
+    public MeasurementResponse() {
     }
 
     public int getCode() {
@@ -30,19 +28,11 @@ public class MeasurementResponse {
         this.message = message;
     }
 
-    public String getTemperatureUnit() {
-        return temperatureUnit;
-    }
-
-    public void setTemperatureUnit(String temperatureUnit) {
-        this.temperatureUnit = temperatureUnit;
-    }
-
-    public List<MeasurementInfo> getData() {
+    public List<MeasurementSummary> getData() {
         return data;
     }
 
-    public void setData(List<MeasurementInfo> data) {
+    public void setData(List<MeasurementSummary> data) {
         this.data = data;
     }
 }
