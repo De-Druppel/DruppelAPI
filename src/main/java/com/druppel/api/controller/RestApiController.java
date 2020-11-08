@@ -1,9 +1,11 @@
 package com.druppel.api.controller;
 
 import com.druppel.api.dal.MeasurementSummary;
+import com.druppel.api.response.MeasurementResponse;
 import com.druppel.api.service.RestDataTransfer;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +25,9 @@ import java.util.List;
 @Validated
 @RequestMapping("druppel-api")
 public class RestApiController {
+    @Autowired
+    private RestDataTransfer data;
 
-    private final RestDataTransfer data = new RestDataTransfer();
     private final String KEY = "DRUPPEL_KEY";
 
     /**
@@ -37,7 +41,7 @@ public class RestApiController {
      */
     @GetMapping(path = "/past-readings/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<MeasurementSummary> getMeasurements(
+    public MeasurementResponse getMeasurements(
             // Query parameter validations
             @RequestParam(name = "api-key") @NotBlank(message = "API key cannot be empty") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
             @RequestParam(name = "days") @NotBlank(message = "Timeframe cannot be empty") @Size(min = 1, max = 3, message = "Invalid time frame") int days,
@@ -49,7 +53,12 @@ public class RestApiController {
             throw new Exception("Unauthorized");
         }
 
-        return this.data.getAverageSummary(days, espId, type);
+        int code =200;
+        String message ="ok";
+        MeasurementResponse response=new MeasurementResponse(code,message);
+        List<MeasurementSummary> infoList = data.getAverageSummary(days, espId, type);
+
+        return response;
     }
 
     /**
