@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Request example: http://localhost:8080/druppel-api/past-readings/?api-key=DRUPPEL_KEY&days=days&esp-id=123456&type=temprature
@@ -61,7 +63,7 @@ public class RestApiController {
         int code =200;
         String message ="ok";
         MeasurementResponse response = new MeasurementResponse(code,message);
-        List<MeasurementSummary> infoList = vMeasurementService.getAverageSummary(days, espId, type);
+        Map<Date,List<Map<String,Object>>> infoList = vMeasurementService.getAverageSummary(days, espId, type);
         response.setData(infoList);
         return response;
     }

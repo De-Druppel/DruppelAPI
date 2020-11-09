@@ -2,12 +2,14 @@ package com.druppel.api.response;
 
 import com.druppel.api.dal.MeasurementSummary;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class MeasurementResponse {
     private int code;
     private String message;
-    private List<MeasurementSummary> data;
+    private Map<Date,List<Map<String,Object>>>data;
 
     public MeasurementResponse() {
     }
@@ -33,11 +35,11 @@ public class MeasurementResponse {
         this.message = message;
     }
 
-    public List<MeasurementSummary> getData() {
+    public Map<Date,List<Map<String,Object>>> getData() {
         return data;
     }
 
-    public void setData(List<MeasurementSummary> data) {
+    public void setData(Map<Date,List<Map<String,Object>>> data) {
         this.data = data;
     }
 }
