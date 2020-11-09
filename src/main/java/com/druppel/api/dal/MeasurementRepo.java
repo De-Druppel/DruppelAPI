@@ -21,6 +21,6 @@ public interface MeasurementRepo extends JpaRepository <Measurement, Integer> {
      * @param type the type you want to query on
      * @return List of date,type, average value
      */
-    @Query("SELECT date_created, type, value FROM v_measurement WHERE date_created > current_date - interval ?1 day AND esp_id = ?2 AND type LIKE '%?3%'" )
+    @Query("SELECT date AS date, type AS type, value AS value FROM Measurement") // WHERE date_created > current_date - interval ?1 day AND esp_id = ?2 AND type LIKE '%?3%'" )
     public List<MeasurementSummary> getAverageSummary(int days, int espId, String type);
 }

@@ -1,13 +1,13 @@
 package com.druppel.api.controller;
 
 import com.druppel.api.dal.MeasurementSummary;
-import com.druppel.api.dal.VMeasurementRepo;
 import com.druppel.api.response.MeasurementResponse;
 import com.druppel.api.service.RestDataTransfer;
 import com.druppel.api.service.VMeasurementService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @Validated
+@EnableAutoConfiguration
 @RequestMapping("druppel-api")
 public class RestApiController {
     @Autowired
@@ -48,8 +49,8 @@ public class RestApiController {
     public MeasurementResponse getMeasurements(
             // Query parameter validations
             @RequestParam(name = "api-key") @NotBlank(message = "API key cannot be empty") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
-            @RequestParam(name = "days") @NotBlank(message = "Timeframe cannot be empty") @Size(min = 1, max = 3, message = "Invalid time frame") int days,
-            @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be empty") @Size(min = 5, max = 15, message = "Invalid ESP ID") int espId,
+            @RequestParam(name = "days") @NotBlank(message = "Timeframe cannot be empty") @Size(min = 1, max = 3, message = "Invalid time frame") String days,
+            @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be empty") @Size(min = 5, max = 15, message = "Invalid ESP ID") String espId,
             @RequestParam(name = "type") String type
     ) throws Exception {
         // Check if api key is valid
@@ -59,9 +60,9 @@ public class RestApiController {
 
         int code =200;
         String message ="ok";
-        MeasurementResponse response=new MeasurementResponse(code,message);
+        MeasurementResponse response = new MeasurementResponse(code,message);
         List<MeasurementSummary> infoList = vMeasurementService.getAverageSummary(days, espId, type);
-
+        response.setData(infoList);
         return response;
     }
 

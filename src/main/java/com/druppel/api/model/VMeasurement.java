@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "v_measurements")
+@Table(name = "v_measurement")
 public class VMeasurement {
 
     // Should have an Id
@@ -21,7 +21,7 @@ public class VMeasurement {
     private String type;
 
     @Column(name = "value")
-    private Float value;
+    private Double value;
 
     public VMeasurement() {
     }
@@ -58,11 +58,11 @@ public class VMeasurement {
         this.type = type;
     }
 
-    public Float getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 }
