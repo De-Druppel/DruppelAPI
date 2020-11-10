@@ -7,11 +7,13 @@ import java.util.List;
 @Table(name = "plant")
 public class Plant {
     @Id
-    @Column(name = "esp_id")
-    private Integer idEsp;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @OneToMany(targetEntity = Measurement.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", referencedColumnName = "esp_id")
+    @Column( name= "esp_id")
+    private int idEsp;
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "plant")
     private List<Measurement> measurementList;
 
     public Plant() {
@@ -32,4 +34,6 @@ public class Plant {
     public void setMeasurementList(List<Measurement> measurementList) {
         this.measurementList = measurementList;
     }
+
+    public void addMeasurement(Measurement measurement) {this.measurementList.add(measurement);}
 }
