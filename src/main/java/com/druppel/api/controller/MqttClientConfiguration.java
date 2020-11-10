@@ -42,7 +42,7 @@ public class MqttClientConfiguration {
     public Properties properties() {
         Properties properties = new Properties();
         try {
-            properties.load(MqttClientConfiguration.class.getClassLoader().getResourceAsStream("mqtt.properties"));
+            properties.load(MqttClientConfiguration.class.getClassLoader().getResourceAsStream("mqttclient.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

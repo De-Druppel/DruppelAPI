@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Measurement {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "date_created")
@@ -20,8 +20,9 @@ public class Measurement {
     @Column(name = "value")
     private Float value;
 
-    @Column( name= "client_id")
-    private Integer espId;
+    @JoinColumn(name = "client_id")
+    @ManyToOne()
+    private Plant plant;
 
     public Measurement() {
     }
@@ -58,12 +59,8 @@ public class Measurement {
         this.value = value;
     }
 
-    public Integer getEspId() {
-        return espId;
-    }
+    public Plant getPlant() { return plant; }
 
-    public void setEspId(Integer espId) {
-        this.espId = espId;
-    }
+    public void setPlant(Plant plant) { this.plant = plant; }
 }
 

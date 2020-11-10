@@ -2,6 +2,8 @@ package com.druppel.api.service;
 
 import com.druppel.api.model.Measurement;
 import com.druppel.api.model.Plant;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,8 +11,11 @@ import java.util.Date;
  * This class is responsible for pass a MQTT message header String and playload into a function so as to parse the relevant
  * data into a Plant object and its Measurement sub-object, and returning the Plant.
  */
+
+@Component
 public class MqttParser {
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
+    private String topicString;
 
     /**
      * Takes a MQTT header String and MQTT payload String. Parses data from these strings, constructs and returns a Plant object with
@@ -26,7 +31,7 @@ public class MqttParser {
         Measurement measurement = new Measurement();
 
         //Find the topic substring in the header string.
-        String topicString = mqttHeader.substring(mqttHeader.indexOf("Garden/" + 1));
+        topicString = mqttHeader.substring(mqttHeader.indexOf("Garden/"));
         topicString = topicString.substring(0, topicString.indexOf(", mqtt_receivedQos"));
 
         //Constructing Plant and measurements object from MQTT message data.
@@ -35,8 +40,10 @@ public class MqttParser {
         measurement.setValue(parseMeasurementValueFromPayload(mqttPayload));
         measurement.setDate(new Date());
         plant.getMeasurementList().add(measurement);
+        measurement.setPlant(plant);
 
         if (DEBUG) {
+            System.out.println("DEBUG enabled in class: " + this.getClass());
             debug(plant);
         }
 
@@ -64,7 +71,9 @@ public class MqttParser {
      */
     private String parseTypeFromTopic(String topicString) {
         //Find the measurement type substring in the topic string.
-        return topicString.substring(topicString.indexOf("/", topicString.indexOf("/") + 1) + 1);
+        String typeString = topicString.substring(topicString.indexOf("Measurement"));
+        typeString = typeString.substring(typeString.indexOf("/") + 1);
+        return typeString;
     }
 
     /**
@@ -84,7 +93,9 @@ public class MqttParser {
      */
     private void debug(Plant plant) {
         Measurement measurement = plant.getMeasurementList().get(0);
+        System.out.println();
         System.out.println("Parse values of " + this.toString() + ":");
+        System.out.println("Topic: " + topicString);
         System.out.println("EspId: " + plant.getIdEsp());
         System.out.println("Measurement type: " + measurement.getType());
         System.out.println("Measurement value: " + measurement.getValue());
