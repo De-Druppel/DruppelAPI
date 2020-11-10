@@ -14,10 +14,8 @@ public class VMeasurementService {
     private VMeasurementRepo vMeasurementRepo;
 
     public Map<Date, List<Map<String, Object>>> getAverageSummary(String days, String EspId, String type) {
-
-           List<MeasurementSummary> list = vMeasurementRepo.getAverageSummary(getDateBack(days), Integer.parseInt(EspId), type);
-            return measurementsGroupedByDay(list);
-
+        List<MeasurementSummary> list = vMeasurementRepo.getAverageSummary(getDateBack(days), Integer.parseInt(EspId), type == null ? "" : type);
+        return measurementsGroupedByDay(list);
     }
 
     public Date getDateBack(String days) {
@@ -28,7 +26,7 @@ public class VMeasurementService {
         return queryDate.getTime();
     }
 
-    public  Map<Date, List<Map<String, Object>>> measurementsGroupedByDay(List<MeasurementSummary> list){
+    public Map<Date, List<Map<String, Object>>> measurementsGroupedByDay(List<MeasurementSummary> list) {
         Map<Date, List<Map<String, Object>>> summary = new HashMap<>();
         for (MeasurementSummary measurementSummary : list) {
             ObjectMapper m = new ObjectMapper();

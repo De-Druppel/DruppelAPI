@@ -53,7 +53,7 @@ public class RestApiController {
             @RequestParam(name = "api-key") @NotBlank(message = "API key cannot be empty") @Size(min = 10, max = 15, message = "Invalid API key") String apiKey,
             @RequestParam(name = "days") @NotBlank(message = "Timeframe cannot be empty") @Size(min = 1, max = 3, message = "Invalid time frame") String days,
             @RequestParam(name = "esp-id") @NotBlank(message = "ESP ID key cannot be empty") @Size(min = 5, max = 15, message = "Invalid ESP ID") String espId,
-            @RequestParam(name = "type") String type
+            @RequestParam(required = false, name = "type") String type
     ) throws Exception {
         // Check if api key is valid
         if (!this.isValidApiKey(apiKey)) {
