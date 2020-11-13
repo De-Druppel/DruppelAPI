@@ -90,7 +90,7 @@ public class RestApiController {
 
         JSONObject result = new JSONObject();
         try {
-            result.put("code", 500);
+            result.put("code", 400);
             result.put("message", ex.getMessage());
         } catch (JSONException e) {
             e.printStackTrace();
