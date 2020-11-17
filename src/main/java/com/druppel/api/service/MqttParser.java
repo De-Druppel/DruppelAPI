@@ -14,29 +14,36 @@ import java.util.Date;
 
 @Component
 public class MqttParser {
-    private final boolean DEBUG = false;
+    private final boolean DEBUG = true;
     private String topicString;
 
     /**
      * Takes a MQTT header String and MQTT payload String. Parses data from these strings, constructs and returns a Plant object with
      * a Measurement sub-object.
      *
+     * MQTT Header example: {mqtt_receivedRetained=false, mqtt_id=0, mqtt_duplicate=false, id=f4459eeb-f88a-46a3-af3d-9dc7521aac40, mqtt_receivedTopic=Garden/83209475/Measurement/Temperature, mqtt_receivedQos=0, timestamp=1605259492850}
+     *MQTT Payload example: 33.2
+     *
      * @param mqttHeader String MQTT message header
      * @param mqttPayload String MQTT message payload
      * @return Plant object with associated Measurement sub-object in single item List
      */
     public Plant parse(String mqttHeader, String mqttPayload) {
+
         Plant plant = new Plant();
         plant.setMeasurementList(new ArrayList<>());
         Measurement measurement = new Measurement();
 
-        //Find the topic substring in the header string.
+//        Find the topic substring in the header string.
         topicString = mqttHeader.substring(mqttHeader.indexOf("Garden/"));
         topicString = topicString.substring(0, topicString.indexOf(", mqtt_receivedQos"));
 
-        //Constructing Plant and measurements object from MQTT message data.
-        plant.setIdEsp(parseEspIdFromTopic(topicString));
-        measurement.setType(parseTypeFromTopic(topicString));
+//        Split topic string by /.
+        String[] topicStringArray = topicString.split("/", 0);
+
+//        Constructing Plant and measurements object from MQTT message data.
+        plant.setIdEsp(parseEspIdFromTopic(topicStringArray));
+        measurement.setType(parseTypeFromTopic(topicStringArray));
         measurement.setValue(parseMeasurementValueFromPayload(mqttPayload));
         measurement.setDate(new Date());
         plant.getMeasurementList().add(measurement);
@@ -53,26 +60,24 @@ public class MqttParser {
     /**
      * Extracts the Esp-Id from a MQTT topic String
      *
-     * @param topicString String of MQTT topics extracted from MQTT message header
+     * @param topicStringArray String array of MQTT topics extracted from MQTT message header
      * @return int Esp-Id of the device that published the MQTT message
      */
-    private int parseEspIdFromTopic(String topicString) {
+    private int parseEspIdFromTopic(String[] topicStringArray) {
         //Find the espId substring in the topic string.
-        String espIdString = topicString.substring(topicString.indexOf("/") + 1);
-        espIdString = espIdString.substring(0, topicString.indexOf("/"));
+        String espIdString = topicStringArray[1];
         return Integer.parseInt(espIdString);
     }
 
     /**
      * Extracts the measurement type from a MQTT topic String
      *
-     * @param topicString String of MQTT topics extracted from MQTT message header
+     * @param topicStringArray String array of MQTT topics extracted from MQTT message header
      * @return String type of the measurement that was published
      */
-    private String parseTypeFromTopic(String topicString) {
+    private String parseTypeFromTopic(String[] topicStringArray) {
         //Find the measurement type substring in the topic string.
-        String typeString = topicString.substring(topicString.indexOf("Measurement"));
-        typeString = typeString.substring(typeString.indexOf("/") + 1);
+        String typeString = topicStringArray[3];
         return typeString;
     }
 

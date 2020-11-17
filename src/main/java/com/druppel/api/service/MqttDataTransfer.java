@@ -4,6 +4,7 @@ import com.druppel.api.dal.MeasurementRepo;
 import com.druppel.api.dal.PlantRepo;
 import com.druppel.api.model.Measurement;
 import com.druppel.api.model.Plant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +14,7 @@ public class MqttDataTransfer {
     private final PlantRepo plantRepo;
     private final MeasurementRepo measurementRepo;
 
+    @Autowired
     public MqttDataTransfer(PlantRepo plantRepo, MeasurementRepo measurementRepo, MqttParser mqttParser) {
         this.plantRepo = plantRepo;
         this.measurementRepo = measurementRepo;
