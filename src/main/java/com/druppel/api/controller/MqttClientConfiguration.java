@@ -38,16 +38,16 @@ public class MqttClientConfiguration {
     /**
      * @return MQTT subscriber details properties from properties file.
      */
-    @Bean
-    public Properties properties() {
-        Properties properties = new Properties();
-        try {
-            properties.load(MqttClientConfiguration.class.getClassLoader().getResourceAsStream("mqttclient.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
+//    @Bean
+//    public Properties properties() {
+//        Properties properties = new Properties();
+//        try {
+//            properties.load(MqttClientConfiguration.class.getClassLoader().getResourceAsStream("mqttclient.properties"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return properties;
+//    }
 
     /**
      * Sets connection options for the Mqtt Client factory.
@@ -59,9 +59,9 @@ public class MqttClientConfiguration {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
         // Set mqtt connection options
-        options.setServerURIs(new String[]{properties().getProperty("SERVERURL")});
-        options.setUserName(properties().getProperty("USERNAME"));
-        options.setPassword(properties().getProperty("PASSWORD").toCharArray());
+        options.setServerURIs(new String[]{System.getenv("SERVERURL")});
+        options.setUserName(System.getenv("USERNAME"));
+        options.setPassword(System.getenv("PASSWORD").toCharArray());
         factory.setConnectionOptions(options);
         return factory;
     }
@@ -74,9 +74,9 @@ public class MqttClientConfiguration {
     @Bean
     public MessageProducer inbound() {
         //Generate unique clientId.
-        String clientId = properties().getProperty("CLIENT_ID") + System.currentTimeMillis();
+        String clientId = System.getenv("CLIENT_ID") + System.currentTimeMillis();
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttClientFactory(), properties().getProperty("MQTT_TOPIC"));
+                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttClientFactory(), System.getenv(("MQTT_TOPIC")));
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
