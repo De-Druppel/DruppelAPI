@@ -11,7 +11,7 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 DROP TABLE IF EXISTS measurement;
 
 CREATE TABLE `measurement` (
-  `id` int(11) NOT NULL,
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `client_id` int(11) NOT NULL,
   `type` varchar(25) NOT NULL,
   `value` float NOT NULL,
@@ -948,7 +948,7 @@ INSERT INTO `measurement` (`id`, `client_id`, `type`, `value`, `date_created`) V
 DROP TABLE IF EXISTS plant;
 
 CREATE TABLE `plant` (
-  `id` int(11) NOT NULL,
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `esp_id` int(11) NOT NULL
 );
 
@@ -965,7 +965,8 @@ INSERT INTO `plant` (`id`, `esp_id`) VALUES
 (17, 999999999);
 
 DROP TABLE IF EXISTS v_measurement;
+DROP TABLE IF EXISTS v_measurement;
 
 CREATE VIEW v_measurement
 AS
-select `t1`.`id` AS `id`,`t2`.`esp_id` AS `esp_id`,`t1`.`type` AS `type`,round(avg(`t1`.`value`),2) AS `value`,`t1`.`date_created` AS `date_created` from (`measurement` `t1` join `plant` `t2` on(`t1`.`client_id` = `t2`.`id`)) group by `t2`.`esp_id`,`t1`.`date_created`,`t1`.`type`;
+select `t2`.`esp_id` AS `esp_id`,`t1`.`type` AS `type`,round(avg(`t1`.`value`),2) AS `value`,`t1`.`date_created` AS `date_created` from (`measurement` `t1` join `plant` `t2` on(`t1`.`client_id` = `t2`.`id`)) group by `t2`.`esp_id`,`t1`.`date_created`,`t1`.`type`;
