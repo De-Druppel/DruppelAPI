@@ -78,7 +78,7 @@ public class MqttClientConfiguration {
         //Generate unique clientId.
         String clientId = System.getenv("CLIENT_ID") + System.currentTimeMillis();
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttClientFactory(), System.getenv(("MQTT_TOPIC")));
+                new MqttPahoMessageDrivenChannelAdapter(clientId, context.getBean(MqttPahoClientFactory.class), System.getenv(("MQTT_TOPIC")));
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
