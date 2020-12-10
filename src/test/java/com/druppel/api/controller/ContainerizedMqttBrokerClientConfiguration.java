@@ -1,15 +1,13 @@
 package com.druppel.api.controller;
 
 import com.hivemq.testcontainer.junit4.HiveMQTestContainerRule;
-import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.internal.wire.MqttConnect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -20,6 +18,7 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
+
 /**
  * USAGE:
  * Download/run Docker
@@ -27,15 +26,18 @@ import org.springframework.messaging.MessageHandler;
  */
 @TestConfiguration
 @IntegrationComponentScan
-@Profile("ContainerizedMqttBroker")
+@Profile({"ContainerizedMqttBroker"})
+@PropertySource("classpath:application-production.properties")
+
 public class ContainerizedMqttBrokerClientConfiguration {
 
-@Autowired
+    @Autowired
     ApplicationContext applicationContext;
 
     //NEEDS to be static final to ensure testcontainer starts before mqtt client and publisher.
     @Bean
     public static final HiveMQTestContainerRule hiveMQTestContainerRule() {
+
         HiveMQTestContainerRule hiveMQTestContainerRule = new HiveMQTestContainerRule();
         hiveMQTestContainerRule.start();
         return hiveMQTestContainerRule;
@@ -53,7 +55,6 @@ public class ContainerizedMqttBrokerClientConfiguration {
         return factory;
     }
 
-
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
@@ -62,7 +63,7 @@ public class ContainerizedMqttBrokerClientConfiguration {
         MqttPahoMessageHandler messageHandler =
                 new MqttPahoMessageHandler(clientId, mqttClientFactory);
         messageHandler.setAsync(true);
-        messageHandler.setDefaultTopic("Garden/999333558/Measurement/Moisture");
+        messageHandler.setDefaultTopic("Garden/" + generatedEsp() + "/Measurement/Test");
         return messageHandler;
     }
 
@@ -73,9 +74,19 @@ public class ContainerizedMqttBrokerClientConfiguration {
         return directChannel;
     }
 
+    /**
+     * Generates ESP-ID based on current time in millis.
+     * @return Random ESP-ID int.
+     */
+    @Bean
+    public int generatedEsp() {
+        long currentTimeInMilis = System.currentTimeMillis();
+        int espId = (int) (currentTimeInMilis % 1000000000);
+        return espId;
+    }
+
     @MessagingGateway(defaultRequestChannel = "mqttOutboundChannel")
     public interface MqttMessageProducer {
-
         void sendToMqtt(String data);
     }
 }
