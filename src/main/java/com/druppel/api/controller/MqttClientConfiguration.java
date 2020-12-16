@@ -4,6 +4,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
@@ -55,6 +56,7 @@ public class MqttClientConfiguration {
      * @return mqtt client factory.
      */
     @Bean
+    @Profile("production")
     public MqttPahoClientFactory mqttClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
@@ -76,7 +78,7 @@ public class MqttClientConfiguration {
         //Generate unique clientId.
         String clientId = System.getenv("CLIENT_ID") + System.currentTimeMillis();
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttClientFactory(), System.getenv(("MQTT_TOPIC")));
+                new MqttPahoMessageDrivenChannelAdapter(clientId, context.getBean(MqttPahoClientFactory.class), System.getenv(("MQTT_TOPIC")));
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);

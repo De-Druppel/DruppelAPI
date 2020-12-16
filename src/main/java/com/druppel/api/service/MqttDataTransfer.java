@@ -34,6 +34,8 @@ public class MqttDataTransfer {
         Plant checkPlant = plantRepo.findByIdEsp(plant.getIdEsp());
         if (checkPlant == null) {
             plantRepo.save(plant);
+            measurement.setPlant(plant);
+            measurementRepo.save(measurement);
         } else if (checkPlant != null) {
             //If plant with Esp ID already exists, set Plant entity in Measurement entity and save measurement.
             plant = checkPlant;

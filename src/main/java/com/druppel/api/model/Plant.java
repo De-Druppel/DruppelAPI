@@ -13,7 +13,7 @@ public class Plant {
     @Column( name= "esp_id")
     private int idEsp;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "plant")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "plant", fetch = FetchType.EAGER)
     private List<Measurement> measurementList;
 
     public Plant() {
