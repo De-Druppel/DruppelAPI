@@ -1,6 +1,6 @@
 package com.druppel.api.controller;
 
-import com.druppel.api.response.MeasurementResponse;
+import com.druppel.api.service.MqttDataTransfer;
 import com.druppel.api.service.RestDataTransfer;
 import com.druppel.api.service.VMeasurementService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,8 +39,9 @@ public class RestApiControllerTest {
     private VMeasurementService vMeasurementService;
     @MockBean
     private RestDataTransfer restDataTransfer;
+    @MockBean
+    private MqttDataTransfer mqttDataTransfer;
 
-    MeasurementResponse measurementResponseMock = new MeasurementResponse(200, "ok");
     @Test
     public void getMeasurementsTestSucces() throws Exception {
 
